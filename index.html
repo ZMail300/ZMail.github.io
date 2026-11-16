@@ -4,113 +4,444 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ZMail - Your Email World</title>
+<title>ZMail | Your Email World</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-* { box-sizing: border-box; }
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f1f5f9;
-  color: #172554;
+  padding: 0;
 }
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f3f6fc;
+  color: #172554;
+  min-height: 100vh;
+}
+
 header {
-  background: #172554;
+  background: #102653;
   color: white;
-  padding: 25px 8%;
+  padding: 20px 7%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.logo { font-size: 30px; font-weight: bold; }
-.hero {
-  text-align: center;
-  padding: 90px 20px;
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #60a5fa;
 }
-.hero h1 { font-size: 48px; }
-.hero p {
-  font-size: 19px;
-  color: #64748b;
-}
-button {
-  background: #2563eb;
-  color: white;
-  border: 0;
-  padding: 15px 28px;
-  border-radius: 9px;
-  cursor: pointer;
-  font-size: 16px;
-}
-.features {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+
+main {
+  max-width: 1000px;
+  margin: 65px auto;
   padding: 20px;
 }
-.feature {
+
+h1 {
+  font-size: 38px;
+  margin-bottom: 12px;
+}
+
+p {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.card {
   background: white;
-  padding: 25px;
-  border-radius: 14px;
-  width: 230px;
-  text-align: center;
+  padding: 35px;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px #10265312;
+  max-width: 450px;
+  margin: 30px auto;
 }
-.notice {
-  background: #dbeafe;
+
+input {
+  width: 100%;
   padding: 15px;
-  margin: 25px auto;
-  max-width: 650px;
-  border-radius: 10px;
-  font-size: 14px;
+  margin: 10px 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  font-size: 16px;
 }
+
+button {
+  border: none;
+  border-radius: 9px;
+  padding: 14px 20px;
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+.primary {
+  width: 100%;
+}
+
+.link {
+  background: none;
+  color: #2563eb;
+  padding: 8px;
+}
+
+.hidden {
+  display: none;
+}
+
+#message {
+  margin-top: 15px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.dashboard {
+  background: white;
+  padding: 35px;
+  border-radius: 18px;
+  margin-top: 25px;
+}
+
 footer {
   text-align: center;
-  padding: 25px;
+  padding: 30px;
   color: #64748b;
 }
 </style>
 </head>
+
 <body>
 
 <header>
   <div class="logo">✉ ZMail</div>
-  <div>Your Email World</div>
+  <span>Your Email World</span>
 </header>
 
-<section class="hero">
-  <h1>Welcome to ZMail!</h1>
-  <p>A new way to imagine your email experience.</p>
-  <button onclick="about()">Explore ZMail</button>
-</section>
+<main>
 
-<section class="features">
-  <div class="feature">
-    <h2>📥 Inbox</h2>
-    <p>Your messages in one place.</p>
-  </div>
-  <div class="feature">
-    <h2>✉ Compose</h2>
-    <p>A simple email experience.</p>
-  </div>
-  <div class="feature">
-    <h2>⭐ Organise</h2>
-    <p>Keep everything organised.</p>
-  </div>
-</section>
+  <section id="welcome">
+    <div style="text-align:center">
+      <h1>Welcome to ZMail.</h1>
+      <p>Your email. Your world. All in one place.</p>
+    </div>
 
-<div class="notice">
-  Educational prototype only. ZMail is not yet a real email
-  provider. Do not enter passwords or private information.
-</div>
+    <div class="card">
+
+      <div id="signup">
+        <h2>Create your ZMail account</h2>
+        <p>Join the ZMail community.</p>
+
+        <form id="signupForm">
+          <input
+            type="email"
+            id="signupEmail"
+            placeholder="Your email address"
+            autocomplete="email"
+            required>
+
+          <input
+            type="password"
+            id="signupPassword"
+            placeholder="Create a password"
+            autocomplete="new-password"
+            minlength="8"
+            required>
+
+          <button class="primary" type="submit">
+            Create Account
+          </button>
+        </form>
+
+        <p style="text-align:center;margin-top:20px">
+          Already registered?
+          <button class="link" id="showLogin">Log in</button>
+        </p>
+      </div>
+
+      <div id="login" class="hidden">
+        <h2>Welcome back!</h2>
+        <p>Log in to your ZMail account.</p>
+
+        <form id="loginForm">
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="Your email address"
+            autocomplete="email"
+            required>
+
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Your password"
+            autocomplete="current-password"
+            required>
+
+          <button class="primary" type="submit">
+            Log In
+          </button>
+        </form>
+
+        <button class="link" id="forgotPassword">
+          Forgot password?
+        </button>
+
+        <p style="text-align:center;margin-top:15px">
+          New to ZMail?
+          <button class="link" id="showSignup">Create account</button>
+        </p>
+      </div>
+
+      <p id="message" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="dashboard">
+      <h1>Welcome to ZMail! 🎉</h1>
+      <p>You are successfully logged in.</p>
+
+      <h3 style="margin-top:25px">Your account</h3>
+      <p id="userEmail"></p>
+
+      <hr style="margin:25px 0;border:0;border-top:1px solid #e2e8f0">
+
+      <h2>Your Inbox</h2>
+      <p>Your ZMail inbox will appear here.</p>
+
+      <button id="logout">Log Out</button>
+    </div>
+  </section>
+
+</main>
 
 <footer>
-  © 2026 ZMail. Your Email. Your World.
+  © 2026 ZMail. All rights reserved.
 </footer>
 
 <script>
-function about() {
-  alert("Welcome to the ZMail project!");
+// =================================
+// ZMAIL SUPABASE CONNECTION
+// =================================
+
+// Replace these two values with your own.
+
+const SUPABASE_URL = "https://yourproject.supabase.co";
+const SUPABASE_KEY = "sb_publishable_yourkey";
+
+const client = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+// =================================
+// PAGE ELEMENTS
+// =================================
+
+const signup = document.getElementById("signup");
+const login = document.getElementById("login");
+const welcome = document.getElementById("welcome");
+const dashboard = document.getElementById("dashboard");
+const message = document.getElementById("message");
+
+function showMessage(text, error = false) {
+  message.textContent = text;
+  message.style.color = error ? "#dc2626" : "#15803d";
 }
+
+function showLoginPage() {
+  signup.classList.add("hidden");
+  login.classList.remove("hidden");
+  showMessage("");
+}
+
+function showSignupPage() {
+  login.classList.add("hidden");
+  signup.classList.remove("hidden");
+  showMessage("");
+}
+
+function showDashboard(user) {
+  welcome.classList.add("hidden");
+  dashboard.classList.remove("hidden");
+  document.getElementById("userEmail").textContent =
+    user.email || "Email unavailable";
+}
+
+// =================================
+// SIGNUP
+// =================================
+
+document.getElementById("signupForm")
+.addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+  showMessage("Creating your account...");
+
+  const email =
+    document.getElementById("signupEmail").value.trim();
+
+  const password =
+    document.getElementById("signupPassword").value;
+
+  const { data, error } = await client.auth.signUp({
+    email: email,
+    password: password,
+    options: {
+      emailRedirectTo: window.location.origin
+    }
+  });
+
+  if (error) {
+    showMessage(error.message, true);
+    return;
+  }
+
+  if (data.session) {
+    showDashboard(data.user);
+  } else {
+    showMessage(
+      "Account created! Check your email for the confirmation link."
+    );
+  }
+});
+
+// =================================
+// LOGIN
+// =================================
+
+document.getElementById("loginForm")
+.addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+  showMessage("Logging in...");
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  const { data, error } =
+    await client.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+  if (error) {
+    showMessage(error.message, true);
+    return;
+  }
+
+  showDashboard(data.user);
+});
+
+// =================================
+// PASSWORD RECOVERY
+// =================================
+
+document.getElementById("forgotPassword")
+.addEventListener("click", async function() {
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  if (!email) {
+    showMessage("Enter your email address first.", true);
+    return;
+  }
+
+  const { error } =
+    await client.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin
+    });
+
+  if (error) {
+    showMessage(error.message, true);
+  } else {
+    showMessage("Check your email for the password reset link.");
+  }
+});
+
+// =================================
+// LOGOUT
+// =================================
+
+document.getElementById("logout")
+.addEventListener("click", async function() {
+
+  const { error } = await client.auth.signOut();
+
+  if (error) {
+    showMessage(error.message, true);
+    return;
+  }
+
+  dashboard.classList.add("hidden");
+  welcome.classList.remove("hidden");
+  showSignupPage();
+});
+
+// =================================
+// PAGE NAVIGATION
+// =================================
+
+document.getElementById("showLogin")
+.addEventListener("click", showLoginPage);
+
+document.getElementById("showSignup")
+.addEventListener("click", showSignupPage);
+
+// =================================
+// RESTORE EXISTING SESSION
+// =================================
+
+async function initialize() {
+
+  const { data, error } = await client.auth.getSession();
+
+  if (error) {
+    showMessage(error.message, true);
+    return;
+  }
+
+  if (data.session) {
+    showDashboard(data.session.user);
+  }
+}
+
+client.auth.onAuthStateChange((event, session) => {
+
+  if (event === "SIGNED_IN" && session) {
+    showDashboard(session.user);
+  }
+
+  if (event === "SIGNED_OUT") {
+    dashboard.classList.add("hidden");
+    welcome.classList.remove("hidden");
+    showSignupPage();
+  }
+
+});
+
+initialize();
+
 </script>
+
+</body>
+</html>
+
 
 </body>
 </html>
