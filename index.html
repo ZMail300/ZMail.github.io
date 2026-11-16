@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZMail - Your Email World</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f1f5f9;
+  color: #172554;
+}
+header {
+  background: #172554;
+  color: white;
+  padding: 25px 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo { font-size: 30px; font-weight: bold; }
+.hero {
+  text-align: center;
+  padding: 90px 20px;
+}
+.hero h1 { font-size: 48px; }
+.hero p {
+  font-size: 19px;
+  color: #64748b;
+}
+button {
+  background: #2563eb;
+  color: white;
+  border: 0;
+  padding: 15px 28px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+.feature {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  width: 230px;
+  text-align: center;
+}
+.notice {
+  background: #dbeafe;
+  padding: 15px;
+  margin: 25px auto;
+  max-width: 650px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #64748b;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">✉ ZMail</div>
+  <div>Your Email World</div>
+</header>
+
+<section class="hero">
+  <h1>Welcome to ZMail!</h1>
+  <p>A new way to imagine your email experience.</p>
+  <button onclick="about()">Explore ZMail</button>
+</section>
+
+<section class="features">
+  <div class="feature">
+    <h2>📥 Inbox</h2>
+    <p>Your messages in one place.</p>
+  </div>
+  <div class="feature">
+    <h2>✉ Compose</h2>
+    <p>A simple email experience.</p>
+  </div>
+  <div class="feature">
+    <h2>⭐ Organise</h2>
+    <p>Keep everything organised.</p>
+  </div>
+</section>
+
+<div class="notice">
+  Educational prototype only. ZMail is not yet a real email
+  provider. Do not enter passwords or private information.
+</div>
+
+<footer>
+  © 2026 ZMail. Your Email. Your World.
+</footer>
+
+<script>
+function about() {
+  alert("Welcome to the ZMail project!");
+}
+</script>
+
+</body>
+</html>
